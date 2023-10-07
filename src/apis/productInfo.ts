@@ -1,15 +1,16 @@
 import {httpClient} from './instance';
 import * as Type from 'types/products';
 
-const PATH = 'data';
+const PATH = 'product';
 
-export const getProductInfo = async (page: number, perPage: number): Promise<Type.ResponseData> => {
+export const getProductInfo = async (page: number, perPage: number) => {
     const response = await httpClient.get<Type.ResponseData>(PATH, {
         params: {
             _page: page,
             _limit: perPage,
         },
     });
+    const totalCount = parseInt(response.headers['x-total-count'], 10);
 
-    return response.data;
+    return {data: response.data, totalCount};
 };

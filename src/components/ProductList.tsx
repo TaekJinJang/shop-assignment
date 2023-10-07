@@ -1,16 +1,23 @@
 import {getProductInfo} from 'apis/productInfo';
+import {TOTAL_ITEMS} from 'constants/constants';
 import useFetch from 'hooks/useFetch';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import Pagination from 'react-js-pagination';
 import * as S from 'styles/pagination';
+
 const ProductList = () => {
-    const {state: fetchStates} = useFetch(getProductInfo);
-    const {data: items, isLoading, error} = fetchStates;
     const [page, setPage] = useState<number>(1); // 현재 페이지 번호
+    const [perPage, setPerPage] = useState<number>(10);
+
+    const fetchProductInfo = useCallback(() => getProductInfo(page, perPage), [page, perPage]);
+    const {state: fetchStates} = useFetch(fetchProductInfo);
+
+    const {data: itemStates, isLoading, error} = fetchStates;
+
     const handlePageChange = (page: number) => {
         setPage(page);
     };
-    console.info('page:', page, 'fetch:', items, isLoading, error);
+    console.info('page:', page, setPerPage, 'fetch:', itemStates, isLoading, error);
 
     return (
         <>
@@ -18,9 +25,8 @@ const ProductList = () => {
             <S.WrapPagination>
                 <Pagination
                     activePage={page}
-                    itemsCountPerPage={5}
-                    totalItemsCount={500}
-                    pageRangeDisplayed={5}
+                    itemsCountPerPage={perPage}
+                    totalItemsCount={TOTAL_ITEMS}
                     prevPageText={'‹'}
                     nextPageText={'›'}
                     onChange={handlePageChange}
