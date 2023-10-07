@@ -1,13 +1,10 @@
-import {getProductInfo} from 'apis/productInfo';
-import useFetch from 'hooks/useFetch';
+import ProductList from 'components/ProductList';
 import styled from 'styled-components';
 
 const Home = () => {
-    const {state} = useFetch(getProductInfo);
-    console.info(state);
     return (
         <Container>
-            <div>test</div>
+            <ProductList />
         </Container>
     );
 };
