@@ -1,4 +1,4 @@
-import {useEffect, useReducer} from 'react';
+import {useCallback, useEffect, useReducer} from 'react';
 import {AxiosError} from 'axios';
 
 interface State<T> {
@@ -36,7 +36,7 @@ const reducer = <T,>(state: State<T>, action: Action<T>) => {
 const useFetch = <T,>(cb: () => Promise<T>) => {
     const [state, dispatch] = useReducer(reducer, initState);
 
-    const getData = async () => {
+    const getData = useCallback(async () => {
         dispatch({type: 'FETCHING'});
         try {
             const data = await cb();
@@ -45,11 +45,11 @@ const useFetch = <T,>(cb: () => Promise<T>) => {
             if (e instanceof AxiosError) dispatch({type: 'ERROR', payload: e});
             console.error(e);
         }
-    };
+    }, [cb]);
 
     useEffect(() => {
         getData();
-    }, []);
+    }, [getData]);
 
     return {state};
 };
