@@ -1,9 +1,15 @@
 import {httpClient} from './instance';
 import * as Type from 'types/products';
 
-const DB_JSON_PATH = 'db.json';
+const PATH = 'data';
 
-export const getProductInfo = async () => {
-    const response = await httpClient.get<Type.ResponseData>(DB_JSON_PATH);
+export const getProductInfo = async (page: number, perPage: number): Promise<Type.ResponseData> => {
+    const response = await httpClient.get<Type.ResponseData>(PATH, {
+        params: {
+            _page: page,
+            _limit: perPage,
+        },
+    });
+
     return response.data;
 };

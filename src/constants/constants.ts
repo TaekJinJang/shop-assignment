@@ -1,1 +1,2 @@
-export const BASE_URL = 'https://shadowed-leaf-fighter.glitch.me';
+export const BASE_URL = 'http://localhost:4000/';
+export const TOTAL_ITEMS = 500;
