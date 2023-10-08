@@ -17,6 +17,7 @@ const ProductList = () => {
         totalCount: 0,
         data: [],
     });
+
     const fetchProductInfo = useCallback(() => getProductInfo(page, perPage), [page, perPage]);
     const {data: itemStates, isLoading, error} = useFetch(fetchProductInfo);
     const {getQuery, addQuery} = useQuerystring();
@@ -33,12 +34,16 @@ const ProductList = () => {
         }
     }, [itemStates]);
 
-    useEffect(() => {
-        const pageParam = getQuery('page');
-        const perPageParam = getQuery('perPage');
-        if (pageParam) setPage(Number(pageParam));
-        if (perPageParam) setPerPage(Number(perPageParam));
-    }, [getQuery]);
+    const pageParam = getQuery('page');
+    const perPageParam = getQuery('perPage');
+    if (pageParam && Number(pageParam) !== page) setPage(() => Number(pageParam));
+    if (perPageParam && Number(perPageParam) !== perPage) setPerPage(() => Number(perPageParam));
+    // useEffect(() => { 최적화
+    // const pageParam = getQuery('page');
+    // const perPageParam = getQuery('perPage');
+    // if (pageParam && Number(pageParam) !== page) setPage(() => Number(pageParam));
+    // if (perPageParam && Number(perPageParam) !== perPage) setPerPage(() => Number(perPageParam));
+    // }, [ page, perPage]);
 
     return (
         <>
