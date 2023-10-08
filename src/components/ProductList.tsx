@@ -5,7 +5,7 @@ import {useCallback, useEffect, useState} from 'react';
 import Pagination from 'react-js-pagination';
 import * as S from 'styles/pagination';
 import * as Type from 'types/products';
-import SelectBox from './SelectBox';
+import SelectBox from './common/SelectBox';
 import useQuerystring from 'hooks/useQueryString';
 import ProductCard from './ProductCard';
 import styled from 'styled-components';
@@ -85,7 +85,7 @@ const Container = styled.div`
 const ProductHeader = styled.header`
     font-size: 40px;
     font-weight: 700;
-    margin: 10px 0px;
+    margin: 20px 0px;
     height: 50px;
     display: flex;
     justify-content: center;
