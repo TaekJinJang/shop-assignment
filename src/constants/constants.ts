@@ -6,3 +6,4 @@ export const ITEMS_COUNT_PER_PAGE = [
     {value: 50, name: '50개'},
     {value: 100, name: '100개'},
 ];
+export const SKELETON_COLOR = 'rgba(208, 215, 222, 0.48)';

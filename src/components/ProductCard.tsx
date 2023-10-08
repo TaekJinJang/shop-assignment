@@ -7,19 +7,18 @@ const ProductCard = ({product_name, price, main_image, keywords}: Type.productDa
     return (
         <>
             <Card>
-                <Box>
-                    <Image src={main_image} alt='asdfsdf' />
-                    <CardBody>
-                        <CardTitle>{product_name}</CardTitle>
-                        {keywordList.map((keyword, index) => (
-                            <span key={index}>#{keyword} </span>
-                        ))}
-                    </CardBody>
-                </Box>
-                <CardFooter>
-                    <CardPrice>\ {Number(price).toLocaleString()}</CardPrice>
-                    <Button>바로 가기</Button>
-                </CardFooter>
+                <div className='CardBody'>
+                    <img className='Image' src={main_image} alt='asdfsdf' />
+                    <h1 className='CardTitle'>{product_name}</h1>
+                    {keywordList.map((keyword, index) => (
+                        <span key={index}>#{keyword} </span>
+                    ))}
+                </div>
+
+                <div className='CardFooter'>
+                    <div className='CardPrice'>\ {Number(price).toLocaleString()}</div>
+                    <button className='CardButton'>바로 가기</button>
+                </div>
             </Card>
         </>
     );
@@ -27,7 +26,7 @@ const ProductCard = ({product_name, price, main_image, keywords}: Type.productDa
 
 export default ProductCard;
 
-const Card = styled.div`
+export const Card = styled.div`
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -39,47 +38,43 @@ const Card = styled.div`
     }
     padding: 1rem;
     margin: 0.5rem;
-`;
 
-const Box = styled.div`
-    position: relative;
-`;
-
-const Image = styled.img`
-    object-fit: cover;
-    width: 100%;
-    height: auto;
-`;
-const CardTitle = styled.h1`
-    font-size: 20px;
-    font-weight: 700;
-    margin: 10px 0;
-    line-height: 1.3;
-`;
-const CardBody = styled.div`
-    padding: 10px 5px;
-`;
-
-const CardFooter = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-`;
-const CardPrice = styled.span`
-    font-size: 1.2rem;
-    font-weight: 700;
-`;
-
-const Button = styled.button`
-    background: #789bfb;
-    color: white;
-    &:hover {
-        cursor: pointer;
-        background: #789bfbb5;
+    .CardBody {
+        padding: 10px 5px;
+        .Image {
+            object-fit: cover;
+            width: 100%;
+            height: auto;
+        }
+        .CardTitle {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 10px 0;
+            line-height: 1.3;
+        }
     }
-    border: none;
-    border-radius: 10px;
-    width: 80px;
-    height: 30px;
+    .CardFooter {
+        padding: 0px 5px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        .CardPrice {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .CardButton {
+            background: #789bfb;
+            color: white;
+            &:hover {
+                cursor: pointer;
+                background: #789bfbb5;
+            }
+            border: none;
+            border-radius: 10px;
+            width: 80px;
+            height: 30px;
+        }
+    }
 `;
