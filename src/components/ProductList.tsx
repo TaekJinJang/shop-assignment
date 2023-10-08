@@ -6,6 +6,9 @@ import Pagination from 'react-js-pagination';
 import * as S from 'styles/pagination';
 import * as Type from 'types/products';
 import SelectBox from './SelectBox';
+import useQuerystring from 'hooks/useQueryString';
+import ProductCard from './ProductCard';
+import styled from 'styled-components';
 
 const ProductList = () => {
     const [page, setPage] = useState<number>(1); // 현재 페이지 번호
@@ -16,49 +19,78 @@ const ProductList = () => {
     });
     const fetchProductInfo = useCallback(() => getProductInfo(page, perPage), [page, perPage]);
     const {data: itemStates, isLoading, error} = useFetch(fetchProductInfo);
+    const {getQuery, addQuery} = useQuerystring();
 
     const handlePageChange = (page: number) => {
-        setPage(page);
+        addQuery('page', page.toString());
     };
-    const handleSelectBox = (value: number) => {
-        console.info(value);
-        setPerPage(value);
+    const handleSelectBox = (perPage: number) => {
+        addQuery('perPage', perPage.toString());
     };
     useEffect(() => {
         if (itemStates) {
             setItems({totalCount: itemStates.totalCount, data: itemStates.data});
         }
     }, [itemStates]);
-    console.info('page:', page, setPerPage, 'fetch:', itemStates, isLoading, error);
+
+    useEffect(() => {
+        const pageParam = getQuery('page');
+        const perPageParam = getQuery('perPage');
+        if (pageParam) setPage(Number(pageParam));
+        if (perPageParam) setPerPage(Number(perPageParam));
+    }, [getQuery]);
 
     return (
         <>
-            {itemStates && (
-                <>
-                    {items.data.map(item => {
-                        return <div>{item.id}</div>;
-                    })}
-                    {
-                        <SelectBox
-                            options={ITEMS_COUNT_PER_PAGE}
-                            handleSelectBox={handleSelectBox}
-                            initialValue={10}
-                        />
-                    }
-                    <S.WrapPagination>
-                        <Pagination
-                            activePage={page}
-                            itemsCountPerPage={perPage}
-                            totalItemsCount={items.totalCount}
-                            prevPageText={'‹'}
-                            nextPageText={'›'}
-                            onChange={handlePageChange}
-                        />
-                    </S.WrapPagination>
-                </>
-            )}
+            <Container>
+                <SelectBoxContainer>
+                    <SelectBox
+                        options={ITEMS_COUNT_PER_PAGE}
+                        handleSelectBox={handleSelectBox}
+                        initialValue={perPage}
+                    />
+                </SelectBoxContainer>
+                {itemStates && (
+                    <>
+                        <ProductContainer>
+                            {items.data.map(item => {
+                                return <ProductCard key={item.id} {...item} />;
+                            })}
+                        </ProductContainer>
+
+                        <S.WrapPagination>
+                            <Pagination
+                                activePage={page}
+                                itemsCountPerPage={perPage}
+                                totalItemsCount={items.totalCount}
+                                prevPageText={'‹'}
+                                nextPageText={'›'}
+                                onChange={handlePageChange}
+                            />
+                        </S.WrapPagination>
+                    </>
+                )}
+                {isLoading && <div>a</div>}
+                {error && <div>a</div>}
+            </Container>
         </>
     );
 };
 
 export default ProductList;
+const Container = styled.div`
+    width: 1000px;
+`;
+const ProductContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px; // 아이템 간의 간격 설정
+`;
+const SelectBoxContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0px;
+    margin-left: auto;
+    height: 30px;
+    width: 100px;
+`;
