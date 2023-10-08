@@ -13,13 +13,7 @@ type Action<T> =
     | {type: 'FETCHING'}
     | {type: 'INIT'};
 
-const initState = {
-    isLoading: true,
-    error: null,
-    data: null,
-};
-
-const reducer = <T,>(state: State<T>, action: Action<T>) => {
+const reducer = <T,>(state: State<T>, action: Action<T>): State<T> => {
     switch (action.type) {
         case 'SUCCESS': {
             return {...state, isLoading: false, data: action.payload};
@@ -34,8 +28,12 @@ const reducer = <T,>(state: State<T>, action: Action<T>) => {
 };
 
 const useFetch = <T,>(cb: () => Promise<T>) => {
-    const [state, dispatch] = useReducer(reducer, initState);
-
+    const initState: State<T> = {
+        isLoading: true,
+        error: null,
+        data: null,
+    };
+    const [state, dispatch] = useReducer(reducer<T>, initState);
     const getData = useCallback(async () => {
         dispatch({type: 'FETCHING'});
         try {
@@ -51,7 +49,9 @@ const useFetch = <T,>(cb: () => Promise<T>) => {
         getData();
     }, [getData]);
 
-    return {state};
+    const {data, isLoading, error} = state;
+
+    return {data, isLoading, error};
 };
 
 export default useFetch;

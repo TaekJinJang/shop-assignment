@@ -4,23 +4,25 @@ import useFetch from 'hooks/useFetch';
 import {useCallback, useState} from 'react';
 import Pagination from 'react-js-pagination';
 import * as S from 'styles/pagination';
+// import {ResponseData} from 'types/products';
 
 const ProductList = () => {
     const [page, setPage] = useState<number>(1); // 현재 페이지 번호
     const [perPage, setPerPage] = useState<number>(10);
 
     const fetchProductInfo = useCallback(() => getProductInfo(page, perPage), [page, perPage]);
-    const {state: fetchStates} = useFetch(fetchProductInfo);
-
-    const {data: itemStates, isLoading, error} = fetchStates;
+    const {data: itemState, isLoading, error} = useFetch(fetchProductInfo);
 
     const handlePageChange = (page: number) => {
         setPage(page);
     };
-    console.info('page:', page, setPerPage, 'fetch:', itemStates, isLoading, error);
+    console.info('page:', page, setPerPage, 'fetch:', itemState, isLoading, error);
 
     return (
         <>
+            {/* {itemStates && {itemStates.d.map(()=>{
+
+            })}} */}
             <div>test</div>
             <S.WrapPagination>
                 <Pagination
