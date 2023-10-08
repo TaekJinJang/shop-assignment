@@ -1,9 +1,11 @@
 import ProductList from 'components/ProductList';
+import Header from 'components/common/Header';
 import styled from 'styled-components';
 
 const Home = () => {
     return (
         <Container>
+            <Header />
             <ProductList />
         </Container>
     );
