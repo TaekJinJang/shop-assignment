@@ -1,39 +1,62 @@
 import {getProductInfo} from 'apis/productInfo';
-import {TOTAL_ITEMS} from 'constants/constants';
+import {ITEMS_COUNT_PER_PAGE} from 'constants/constants';
 import useFetch from 'hooks/useFetch';
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import Pagination from 'react-js-pagination';
 import * as S from 'styles/pagination';
-// import {ResponseData} from 'types/products';
+import * as Type from 'types/products';
+import SelectBox from './SelectBox';
 
 const ProductList = () => {
     const [page, setPage] = useState<number>(1); // 현재 페이지 번호
     const [perPage, setPerPage] = useState<number>(10);
-
+    const [items, setItems] = useState<Type.ResponseData>({
+        totalCount: 0,
+        data: [],
+    });
     const fetchProductInfo = useCallback(() => getProductInfo(page, perPage), [page, perPage]);
-    const {data: itemState, isLoading, error} = useFetch(fetchProductInfo);
+    const {data: itemStates, isLoading, error} = useFetch(fetchProductInfo);
 
     const handlePageChange = (page: number) => {
         setPage(page);
     };
-    console.info('page:', page, setPerPage, 'fetch:', itemState, isLoading, error);
+    const handleSelectBox = (value: number) => {
+        console.info(value);
+        setPerPage(value);
+    };
+    useEffect(() => {
+        if (itemStates) {
+            setItems({totalCount: itemStates.totalCount, data: itemStates.data});
+        }
+    }, [itemStates]);
+    console.info('page:', page, setPerPage, 'fetch:', itemStates, isLoading, error);
 
     return (
         <>
-            {/* {itemStates && {itemStates.d.map(()=>{
-
-            })}} */}
-            <div>test</div>
-            <S.WrapPagination>
-                <Pagination
-                    activePage={page}
-                    itemsCountPerPage={perPage}
-                    totalItemsCount={TOTAL_ITEMS}
-                    prevPageText={'‹'}
-                    nextPageText={'›'}
-                    onChange={handlePageChange}
-                />
-            </S.WrapPagination>
+            {itemStates && (
+                <>
+                    {items.data.map(item => {
+                        return <div>{item.id}</div>;
+                    })}
+                    {
+                        <SelectBox
+                            options={ITEMS_COUNT_PER_PAGE}
+                            handleSelectBox={handleSelectBox}
+                            initialValue={10}
+                        />
+                    }
+                    <S.WrapPagination>
+                        <Pagination
+                            activePage={page}
+                            itemsCountPerPage={perPage}
+                            totalItemsCount={items.totalCount}
+                            prevPageText={'‹'}
+                            nextPageText={'›'}
+                            onChange={handlePageChange}
+                        />
+                    </S.WrapPagination>
+                </>
+            )}
         </>
     );
 };
