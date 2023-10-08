@@ -3,7 +3,9 @@ import styled from 'styled-components';
 const Header = () => {
     return (
         <>
-            <MainHeader>JUST:Q</MainHeader>
+            <MainHeader>
+                <a href='/'>JUST:Q</a>
+            </MainHeader>
         </>
     );
 };
@@ -17,6 +19,9 @@ const MainHeader = styled.header`
     height: 40px;
     width: 100%;
     background-color: rgb(30, 173, 142);
-    color: white;
     font-size: 20px;
+    a {
+        color: white;
+        text-decoration: none;
+    }
 `;
