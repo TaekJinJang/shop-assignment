@@ -1,5 +1,5 @@
 export interface ResponseData {
-    data: productData;
+    data: productData[];
     totalCount: number;
 }
 

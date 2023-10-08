@@ -4,7 +4,7 @@ import * as Type from 'types/products';
 const PATH = 'product';
 
 export const getProductInfo = async (page: number, perPage: number): Promise<Type.ResponseData> => {
-    const response = await httpClient.get<Type.productData>(PATH, {
+    const response = await httpClient.get<Type.productData[]>(PATH, {
         params: {
             _page: page,
             _limit: perPage,
