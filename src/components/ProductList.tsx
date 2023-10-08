@@ -9,6 +9,7 @@ import SelectBox from './common/SelectBox';
 import useQuerystring from 'hooks/useQueryString';
 import ProductCard from './ProductCard';
 import styled from 'styled-components';
+import ProductCardSkeleton from './Skeleton/ProductCardSkeleton';
 
 const ProductList = () => {
     const [page, setPage] = useState<number>(1); // 현재 페이지 번호
@@ -56,6 +57,15 @@ const ProductList = () => {
                         initialValue={perPage}
                     />
                 </SelectBoxContainer>
+                {isLoading && (
+                    <>
+                        <ProductContainer>
+                            {Array.from({length: perPage}).map((_, index) => (
+                                <ProductCardSkeleton key={index} />
+                            ))}
+                        </ProductContainer>
+                    </>
+                )}
                 {itemStates && (
                     <>
                         <ProductContainer>
@@ -76,8 +86,13 @@ const ProductList = () => {
                         </S.WrapPagination>
                     </>
                 )}
-                {isLoading && <div>a</div>}
-                {error && <div>a</div>}
+
+                {error && (
+                    <ErrorContainer>
+                        <div>데이터를 불러오는 데 실패하였습니다.</div>
+                        <div>잠시 후 다시 시도해주세요</div>
+                    </ErrorContainer>
+                )}
             </Container>
         </>
     );
@@ -108,4 +123,12 @@ const SelectBoxContainer = styled.div`
     margin-left: auto;
     height: 30px;
     width: 100px;
+`;
+
+const ErrorContainer = styled.div`
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `;
