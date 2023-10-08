@@ -1,4 +1,9 @@
 export interface ResponseData {
+    data: productData;
+    totalCount: number;
+}
+
+export interface productData {
     id: string;
     category_code: string;
     status: string;
