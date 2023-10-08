@@ -43,6 +43,7 @@ const ProductList = () => {
     return (
         <>
             <Container>
+                <ProductHeader>상품 정보</ProductHeader>
                 <SelectBoxContainer>
                     <SelectBox
                         options={ITEMS_COUNT_PER_PAGE}
@@ -79,7 +80,16 @@ const ProductList = () => {
 
 export default ProductList;
 const Container = styled.div`
-    width: 1000px;
+    width: 1200px;
+`;
+const ProductHeader = styled.header`
+    font-size: 40px;
+    font-weight: 700;
+    margin: 10px 0px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 const ProductContainer = styled.div`
     display: grid;
@@ -89,7 +99,7 @@ const ProductContainer = styled.div`
 const SelectBoxContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 20px 0px;
+    margin: 8px;
     margin-left: auto;
     height: 30px;
     width: 100px;
