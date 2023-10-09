@@ -1,3 +1,11 @@
+/**
+ * useFetch
+ *
+ * @template T 가져올 데이터의 타입.
+ * @param {() => Promise<T>} cb 데이터를 가져오는 비동기 함수.
+ * @returns {{data: T | null, isLoading: boolean, error: Error | null}} 객체 반환:
+ */
+
 import {useCallback, useEffect, useReducer} from 'react';
 import {AxiosError} from 'axios';
 

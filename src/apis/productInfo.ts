@@ -1,3 +1,9 @@
+/**
+ * getProductInfo
+ *
+ * @param {page,perPage}
+ * @returns {Promise<data:[{}],totalCount:number>}
+ */
 import {httpClient} from './instance';
 import * as Type from 'types/products';
 
