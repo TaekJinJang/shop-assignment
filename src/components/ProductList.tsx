@@ -10,9 +10,10 @@ import useQuerystring from 'hooks/useQueryString';
 import ProductCard from './ProductCard';
 import styled from 'styled-components';
 import ProductCardSkeleton from './Skeleton/ProductCardSkeleton';
+import NotFound from 'pages/NotFound';
 
 const ProductList = () => {
-    const [page, setPage] = useState<number>(1); // 현재 페이지 번호
+    const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(10);
     const [items, setItems] = useState<Type.ResponseData>({
         totalCount: 0,
@@ -39,12 +40,6 @@ const ProductList = () => {
     const perPageParam = getQuery('perPage');
     if (pageParam && Number(pageParam) !== page) setPage(() => Number(pageParam));
     if (perPageParam && Number(perPageParam) !== perPage) setPerPage(() => Number(perPageParam));
-    // useEffect(() => { 최적화
-    // const pageParam = getQuery('page');
-    // const perPageParam = getQuery('perPage');
-    // if (pageParam && Number(pageParam) !== page) setPage(() => Number(pageParam));
-    // if (perPageParam && Number(perPageParam) !== perPage) setPerPage(() => Number(perPageParam));
-    // }, [ page, perPage]);
 
     return (
         <>
@@ -57,15 +52,7 @@ const ProductList = () => {
                         initialValue={perPage}
                     />
                 </SelectBoxContainer>
-                {isLoading && (
-                    <>
-                        <ProductContainer>
-                            {Array.from({length: perPage}).map((_, index) => (
-                                <ProductCardSkeleton key={index} />
-                            ))}
-                        </ProductContainer>
-                    </>
-                )}
+
                 {itemStates && (
                     <>
                         <ProductContainer>
@@ -86,11 +73,18 @@ const ProductList = () => {
                         </S.WrapPagination>
                     </>
                 )}
-
+                {isLoading && (
+                    <>
+                        <ProductContainer>
+                            {Array.from({length: perPage}).map((_, index) => (
+                                <ProductCardSkeleton key={index} />
+                            ))}
+                        </ProductContainer>
+                    </>
+                )}
                 {error && (
                     <ErrorContainer>
-                        <div>데이터를 불러오는 데 실패하였습니다.</div>
-                        <div>잠시 후 다시 시도해주세요</div>
+                        <NotFound errorStatus={'데이터 불러오기 실패'} />
                     </ErrorContainer>
                 )}
             </Container>
@@ -114,7 +108,7 @@ const ProductHeader = styled.header`
 const ProductContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px; // 아이템 간의 간격 설정
+    gap: 10px;
 `;
 const SelectBoxContainer = styled.div`
     display: flex;
