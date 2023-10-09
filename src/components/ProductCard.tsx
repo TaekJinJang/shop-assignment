@@ -8,7 +8,7 @@ const ProductCard = ({product_name, price, main_image, keywords}: Type.productDa
         <>
             <Card>
                 <div className='CardBody'>
-                    <img className='Image' src={main_image} alt='asdfsdf' />
+                    <img className='Image' src={main_image} alt='product-img' />
                     <h1 className='CardTitle'>{product_name}</h1>
                     {keywordList.map((keyword, index) => (
                         <span key={index}>#{keyword} </span>
